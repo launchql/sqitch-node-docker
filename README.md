@@ -1,4 +1,5 @@
-# LaTeX and PSTricks Docker image
+
+# LaTeX and PSTricks Docker Image
 
 ---
 
@@ -31,6 +32,26 @@ Follow these steps to compile the LaTeX source files for this whitepaper using D
      ```bash
      make ssh
      ```
+
+## PSTricks Section
+
+If your LaTeX document uses `PSTricks` for graphics, follow these additional steps to ensure proper compilation:
+
+### **Convert to PDF**
+`PSTricks` requires special handling as it relies on PostScript. Use the following sequence to compile your `.tex` file:
+
+```bash
+latex file.tex
+dvips file.dvi -o file.ps
+ps2pdf file.ps file.pdf
+```
+
+
+### **Debugging PSTricks Issues**
+If you encounter errors like unknown tokens or failed PostScript commands, ensure:
+   - You're using `dvips` to handle DVI files with embedded PostScript.
+   - All required packages (e.g., `pstricks`, `pst-plot`) are installed in your LaTeX distribution.
+   - Your LaTeX distribution is up to date.
 
 ---
 

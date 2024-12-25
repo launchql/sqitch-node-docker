@@ -1,0 +1,40 @@
+node_modules
+
+# Editor swap/backup files
+*~
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+*.dvi
+*.xdv
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ind
+*.lof
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.log
+*.fdb_latexmk
+*.snm
+*.synctex.gz
+*.nav
+
+# OS-specific files
+.DS_Store
+Thumbs.db

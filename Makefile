@@ -19,6 +19,13 @@ clean:
 tex:
 	docker run -v `pwd`/tex:/usr/src $(IMAGE_NAME) pdflatex test.tex
 
+# Build the LaTeX document with PSTricks using Docker
+pstricks:
+	docker run -v `pwd`/tex:/usr/src $(IMAGE_NAME) sh -c "\
+		latex test.tex && \
+		dvips test.dvi -o test.ps && \
+		ps2pdf test.ps test.pdf"
+
 # Clean LaTeX auxiliary files
 clean-latex:
 	find tex/ -type f \( -name "*.aux" -o -name "*.log" -o -name "*.out" -o -name "*.synctex.gz" -o -name "*.toc" \) -delete
