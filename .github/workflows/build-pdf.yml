@@ -21,13 +21,15 @@ jobs:
     - name: Pull Docker image
       run: docker pull pyramation/pstricks-latex:latest
 
-    # Compile the LaTeX file
+    # Compile the LaTeX file using the built Docker image
     - name: Build LaTeX PDF
       run: |
         docker run --rm \
           -v ${{ github.workspace }}/tex:/usr/src \
-          pyramation/pstricks-latex \
-          pdflatex test.tex
+          latex-build:latest \
+          latex test.tex && \
+          dvips test.dvi -o test.ps && \
+          ps2pdf test.ps test.pdf
 
     # Upload the compiled PDF as an artifact
     - name: Upload PDF Artifact

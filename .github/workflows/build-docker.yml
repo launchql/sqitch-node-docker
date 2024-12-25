@@ -25,6 +25,16 @@ jobs:
           latex-build:latest \
           pdflatex test.tex
 
+    # Compile the LaTeX file using the built Docker image
+    - name: Build LaTeX PDF
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}/tex:/usr/src \
+          latex-build:latest \
+          latex test.tex && \
+          dvips test.dvi -o test.ps && \
+          ps2pdf test.ps test.pdf
+
     # Upload the compiled PDF as an artifact
     - name: Upload PDF Artifact
       uses: actions/upload-artifact@v3
