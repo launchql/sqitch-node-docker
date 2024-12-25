@@ -1,4 +1,5 @@
-# Version tag for the Docker image
+# Image name and version tag
+IMAGE_NAME := pyramation/pstricks-latex
 TAG := 1.0.0
 
 # Default target: Build and run the Docker Compose environment
@@ -7,7 +8,7 @@ def: cleanup
 
 # Open an interactive shell in the LaTeX Docker container
 ssh:
-	docker run -v `pwd`/tex:/usr/src -i -t pyramation/pstricks-latex /bin/bash
+	docker run -v `pwd`/tex:/usr/src -i -t $(IMAGE_NAME) /bin/bash
 
 # Clean Git repository and remove untracked files
 clean:
@@ -16,7 +17,7 @@ clean:
 
 # Build the LaTeX document using Docker
 tex:
-	docker run -v `pwd`/tex:/usr/src pyramation/pstricks-latex pdflatex test.tex
+	docker run -v `pwd`/tex:/usr/src $(IMAGE_NAME) pdflatex test.tex
 
 # Clean LaTeX auxiliary files
 clean-latex:
@@ -24,13 +25,17 @@ clean-latex:
 
 # Build Docker image using the Dockerfile in ./latex
 build: cleanup
-	docker build -t pyramation/pstricks-latex:$(TAG) ./latex
+	docker build -t $(IMAGE_NAME):$(TAG) ./latex
 
-# Tag and push Docker image
-push:
-	docker tag pyramation/pstricks-latex:$(TAG) pyramation/pstricks-latex:$(TAG)
-	docker push pyramation/pstricks-latex:$(TAG)
-	echo "Image pushed with tag: $(TAG)"
+# Tag the image as "latest"
+tag-latest:
+	docker tag $(IMAGE_NAME):$(TAG) $(IMAGE_NAME):latest
+
+# Push Docker image (both versioned and latest tags)
+push: build tag-latest
+	docker push $(IMAGE_NAME):$(TAG)
+	docker push $(IMAGE_NAME):latest
+	echo "Image pushed with tags: $(TAG) and latest"
 
 # Cleanup any existing container with the name "pstricks-latex"
 cleanup:
@@ -38,3 +43,13 @@ cleanup:
 		echo "Stopping and removing existing container..."; \
 		docker stop pstricks-latex && docker rm pstricks-latex; \
 	fi
+
+# Remove all Docker images for this project (optional)
+clean-images:
+	@if docker images | grep $(IMAGE_NAME); then \
+		echo "Removing Docker images for $(IMAGE_NAME)..."; \
+		docker rmi $(IMAGE_NAME):$(TAG) $(IMAGE_NAME):latest || true; \
+	fi
+
+# Convenience target for full reset: Cleanup, rebuild, and push
+reset: cleanup clean-latex build push
