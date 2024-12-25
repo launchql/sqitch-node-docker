@@ -1,4 +1,4 @@
-name: Build LaTeX with Docker
+name: Build LaTeX PDF
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     steps:
     # Checkout the repository
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4 
 
     # Pull the public Docker image
     - name: Pull Docker image
@@ -25,7 +25,7 @@ jobs:
     - name: Build LaTeX PDF
       run: |
         docker run --rm \
-          -v ${{ github.workspace }}/tex:/usr/src \
+          -v "${{ github.workspace }}/tex:/usr/src" \
           pyramation/pstricks-latex \
           sh -c "\
             export PATH=/usr/bin:\$PATH && \
@@ -35,7 +35,7 @@ jobs:
 
     # Upload the compiled PDF as an artifact
     - name: Upload PDF Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test.pdf
         path: tex/test.pdf
