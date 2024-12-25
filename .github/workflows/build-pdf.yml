@@ -1,0 +1,37 @@
+name: Build LaTeX with Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-latex:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Pull the public Docker image
+    - name: Pull Docker image
+      run: docker pull pyramation/pstricks-latex:latest
+
+    # Compile the LaTeX file
+    - name: Build LaTeX PDF
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}/tex:/usr/src \
+          pyramation/pstricks-latex \
+          pdflatex test.tex
+
+    # Upload the compiled PDF as an artifact
+    - name: Upload PDF Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: test.pdf
+        path: tex/test.pdf

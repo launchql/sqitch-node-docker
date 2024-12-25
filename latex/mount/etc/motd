@@ -1,0 +1,14 @@
+    ( ( (     
+  '. ___ .'   
+ '  (> <) '   
+ooO--(_)--Ooo-
+
+Hello, LaTeX!
+
+latex a file
+> latex doc.tex
+
+turn the dvi into a pdf
+> dvipdfm doc.dvi
+
+enjoy!
