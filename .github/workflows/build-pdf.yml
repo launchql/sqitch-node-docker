@@ -30,6 +30,7 @@ jobs:
           sh -c "\
             export PATH=/usr/bin:\$PATH && \
             latex test.tex && \
+            latex test.tex && \
             dvips test.dvi -o test.ps && \
             ps2pdf test.ps test.pdf"
 
@@ -39,3 +40,10 @@ jobs:
       with:
         name: test.pdf
         path: tex/test.pdf
+
+    - name: Upload Log File on Failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test.log
+        path: tex/test.log
