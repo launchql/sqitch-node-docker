@@ -26,7 +26,7 @@ jobs:
       run: |
         docker run --rm \
           -v ${{ github.workspace }}/tex:/usr/src \
-          latex-build:latest \
+          pyramation/pstricks-latex \
           latex test.tex && \
           dvips test.dvi -o test.ps && \
           ps2pdf test.ps test.pdf
