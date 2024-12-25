@@ -27,9 +27,11 @@ jobs:
         docker run --rm \
           -v ${{ github.workspace }}/tex:/usr/src \
           pyramation/pstricks-latex \
-          latex test.tex && \
-          dvips test.dvi -o test.ps && \
-          ps2pdf test.ps test.pdf
+          sh -c "\
+            export PATH=/usr/bin:\$PATH && \
+            latex test.tex && \
+            dvips test.dvi -o test.ps && \
+            ps2pdf test.ps test.pdf"
 
     # Upload the compiled PDF as an artifact
     - name: Upload PDF Artifact
