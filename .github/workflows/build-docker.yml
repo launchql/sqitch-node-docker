@@ -1,7 +1,7 @@
-name: Build LaTeX and Docker
+name: Build Docker
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
+  workflow_dispatch: 
 
 jobs:
   build-latex:
@@ -15,31 +15,4 @@ jobs:
     # Build the Docker image from the provided Dockerfile
     - name: Build Docker image
       run: |
-        docker build -t latex-build:latest latex/
-
-    # Compile the LaTeX file using the built Docker image
-    - name: Build LaTeX PDF
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/tex:/usr/src \
-          latex-build:latest \
-          pdflatex test.tex
-
-    # Compile the LaTeX file using the built Docker image
-    - name: Build LaTeX PDF
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}/tex:/usr/src \
-          latex-build:latest \
-          sh -c "\
-            export PATH=/usr/bin:\$PATH && \
-            latex test.tex && \
-            dvips test.dvi -o test.ps && \
-            ps2pdf test.ps test.pdf"
-
-    # Upload the compiled PDF as an artifact
-    - name: Upload PDF Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: test.pdf
-        path: tex/test.pdf
+        docker build -t node-sqitch:latest node-sqitch/

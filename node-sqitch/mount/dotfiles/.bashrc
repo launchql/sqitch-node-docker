@@ -103,7 +103,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 source ~/.bash_prompt
-source ~/.git-completion.sh
 cat /etc/motd
 echo
 
